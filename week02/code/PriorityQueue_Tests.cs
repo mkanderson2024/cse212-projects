@@ -42,12 +42,29 @@ public class PriorityQueueTests
     }
 
     [TestMethod]
-    // Scenario: creates queue with no added items to verify empty queue handling is valild.
+    // Scenario: Creates queue with serveral items and removes them until the queue is left with no added items to verify
+    // empty queue handling is valild.
     // Expected Result: Program should return error "The queue is empty."
-    // Defect(s) Found: none
+    // Defect(s) Found: Assert.AreEqual failed. Expected:<medium3>. Actual:<high>. Dequeue was removing 1 from the total
+    // count of the queue. Also would not remove the item from the queue once dequeue was called.
     public void TestPriorityQueue_3()
     {
         var priorityQueue = new PriorityQueue();
+
+        priorityQueue.Enqueue("low2", 2);
+        priorityQueue.Enqueue("high", 10);
+        priorityQueue.Enqueue("medium3", 5);
+        priorityQueue.Enqueue("low1", 1);
+        priorityQueue.Enqueue("medium2", 5);
+        priorityQueue.Enqueue("medium1", 5);
+
+        var expectedOrder = new[] { "high", "medium3", "medium2", "medium1", "low2", "low1" };
+
+        foreach (var expected in expectedOrder)
+        {
+            var actual = priorityQueue.Dequeue();
+            Assert.AreEqual(expected, actual);
+        }
 
         var result = Assert.ThrowsException<InvalidOperationException>(() =>
         {
