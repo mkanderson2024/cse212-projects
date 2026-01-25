@@ -29,5 +29,14 @@
     /// <param name="numbers">array of integers</param>
     private static void DisplaySumPairs(int[] numbers) {
         // TODO Problem 2 - This should print pairs of numbers in the given array
+        HashSet<int> lookedAt =  new HashSet<int>(numbers);
+        foreach (var x in numbers)
+        {
+            if (x % 10 == 0)
+            {
+
+            }
+        }
+
     }
 }
