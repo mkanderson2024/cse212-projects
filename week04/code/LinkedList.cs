@@ -32,7 +32,18 @@ public class LinkedList : IEnumerable<int>
     /// </summary>
     public void InsertTail(int value)
     {
-        // TODO Problem 1
+        Node newNode = new Node(value);
+
+        if (_head == null)
+        {
+            _head = newNode;
+            _tail = newNode;
+            return;
+        }
+
+        _tail!.Next = newNode;
+        newNode.Prev = _tail;
+        _tail = newNode;
     }
 
 
@@ -64,7 +75,17 @@ public class LinkedList : IEnumerable<int>
     /// </summary>
     public void RemoveTail()
     {
-        // TODO Problem 2
+        if (_tail == null) return;
+
+        if (_head == _tail)
+        {
+            _head = null;
+            _tail = null;
+            return;
+        }
+
+        _tail = _tail.Prev;
+        _tail!.Next = null;
     }
 
     /// <summary>
@@ -109,7 +130,29 @@ public class LinkedList : IEnumerable<int>
     public void Remove(int value)
     {
         // TODO Problem 3
+        if (_head == null)
+        {
+            return;
+        }
+        if (_head.Data == value)
+        {
+            RemoveHead();
+            return;
+        }
+
+        Node current = _head;
+
+        while (current.Next != null)
+        {
+            if (current.Next.Data == value)
+            {
+                current.Next = current.Next.Next;
+                return;
+            }
+            current = current.Next;
+        }
     }
+
 
     /// <summary>
     /// Search for all instances of 'oldValue' and replace the value to 'newValue'.
@@ -117,6 +160,16 @@ public class LinkedList : IEnumerable<int>
     public void Replace(int oldValue, int newValue)
     {
         // TODO Problem 4
+        Node? current = _head;
+
+        while (current != null)
+        {
+            if (current.Data == oldValue)
+            {
+                current.Data = newValue;
+            }
+            current = current.Next;
+        }
     }
 
     /// <summary>
@@ -147,7 +200,12 @@ public class LinkedList : IEnumerable<int>
     public IEnumerable Reverse()
     {
         // TODO Problem 5
-        yield return 0; // replace this line with the correct yield return statement(s)
+        Node? current = _tail;
+        while (current is not null)
+        {
+            yield return current.Data;
+            current = current.Prev;
+        }
     }
 
     public override string ToString()
@@ -168,8 +226,10 @@ public class LinkedList : IEnumerable<int>
     }
 }
 
-public static class IntArrayExtensionMethods {
-    public static string AsString(this IEnumerable array) {
+public static class IntArrayExtensionMethods
+{
+    public static string AsString(this IEnumerable array)
+    {
         return "<IEnumerable>{" + string.Join(", ", array.Cast<int>()) + "}";
     }
 }
